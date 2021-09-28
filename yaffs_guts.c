@@ -4814,6 +4814,7 @@ void yaffs_deinitialise(struct yaffs_dev *dev)
 		yaffs_deinit_tnodes_and_objs(dev);
 		yaffs_summary_deinit(dev);
 		yaffs_cache_deinit(dev);
+		yaffs_endian_deinit(dev);
 
 		kfree(dev->gc_cleanup_list);
 
