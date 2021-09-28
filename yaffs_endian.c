@@ -103,3 +103,8 @@ void yaffs_endian_config(struct yaffs_dev *dev)
 	if (dev->swap_endian)
 		dev->tn_swap_buffer = kmalloc(dev->tnode_size, GFP_NOFS);
 }
+
+void yaffs_endian_deinit(struct yaffs_dev *dev) {
+	if (dev->swap_endian)
+		kfree(dev->tn_swap_buffer);
+}
