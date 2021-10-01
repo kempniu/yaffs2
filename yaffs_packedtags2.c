@@ -120,10 +120,13 @@ void yaffs_pack_tags2(struct yaffs_dev *dev,
 {
 	yaffs_pack_tags2_tags_only(dev, &pt->t, t);
 
-	if (tags_ecc)
+	if (tags_ecc) {
 		yaffs_ecc_calc_other((unsigned char *)&pt->t,
 				    sizeof(struct yaffs_packed_tags2_tags_only),
 				    &pt->ecc);
+		yaffs_do_endian_u32(dev, &pt->ecc.line_parity);
+		yaffs_do_endian_u32(dev, &pt->ecc.line_parity_prime);
+	}
 }
 
 void yaffs_unpack_tags2_tags_only(struct yaffs_dev *dev,
@@ -184,6 +187,8 @@ void yaffs_unpack_tags2(struct yaffs_dev *dev,
 		yaffs_ecc_calc_other((unsigned char *)&pt->t,
 				sizeof(struct yaffs_packed_tags2_tags_only),
 				&ecc);
+		yaffs_do_endian_u32(dev, &ecc.line_parity);
+		yaffs_do_endian_u32(dev, &ecc.line_parity_prime);
 		result =
 		    yaffs_ecc_correct_other((unsigned char *)&pt->t,
 				sizeof(struct yaffs_packed_tags2_tags_only),
