@@ -25,6 +25,11 @@
 #include "yaffs_osglue.h"
 #include "yaffs_hweight.h"
 
+#ifndef CONFIG_YAFFSFS_PROVIDE_VALUES
+#include <fcntl.h>
+#include <sys/stat.h>
+#endif
+
 void yaffs_bug_fn(const char *file_name, int line_no);
 
 #define BUG() do { yaffs_bug_fn(__FILE__, __LINE__); } while (0)
