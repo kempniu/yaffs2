@@ -25,7 +25,7 @@ YAFFS_COMMON_SOURCES="\
 if [ "$1" = "copy" ] ; then
 set -e -x
 	for i in $YAFFS_COMMON_SOURCES ; do
-		sed ../$i \
+		sed \
 		-e "s/strcat/yaffs_strcat/g" \
 		-e "s/strcpy/yaffs_strcpy/g" \
 		-e "s/strncpy/yaffs_strncpy/g" \
@@ -33,6 +33,7 @@ set -e -x
 		-e "s/strcmp/yaffs_strcmp/g" \
 		-e "s/strncmp/yaffs_strncmp/g"\
 		-e "s/loff_t/Y_LOFF_T/g" \
+		../$i \
 		 >$i
 
 		chmod 0444 $i
