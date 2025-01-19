@@ -216,6 +216,15 @@ static void yaffs_init_raw_objs(struct yaffs_dev *dev)
 	allocator->n_free_objects = 0;
 }
 
+static void yaffs_free_obj_aliases(struct yaffs_obj *objs)
+{
+	for (int i = 0; i < YAFFS_ALLOCATION_NOBJECTS; i++) {
+		if (objs[i].variant_type == YAFFS_OBJECT_TYPE_SYMLINK) {
+			kfree(objs[i].variant.symlink_variant.alias);
+		}
+	}
+}
+
 static void yaffs_deinit_raw_objs(struct yaffs_dev *dev)
 {
 	struct yaffs_allocator *allocator = dev->allocator;
@@ -228,6 +237,7 @@ static void yaffs_deinit_raw_objs(struct yaffs_dev *dev)
 
 	while (allocator->allocated_obj_list) {
 		tmp = allocator->allocated_obj_list->next;
+		yaffs_free_obj_aliases(allocator->allocated_obj_list->objects);
 		kfree(allocator->allocated_obj_list->objects);
 		kfree(allocator->allocated_obj_list);
 		allocator->allocated_obj_list = tmp;
